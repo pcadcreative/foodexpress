@@ -1,33 +1,99 @@
-version: 2
 services:
+  # Nginx Load Balancer - Routes traffic to 2 order services
   - type: web
-    name: order-service
-    env: node
-    region: singapore
+    name: nginx-load-balancer
+    runtime: docker
+    dockerfilePath: ./nginx-lb/Dockerfile
+    dockerContext: ./nginx-lb
     plan: free
-    buildCommand: cd order-service && npm install
-    startCommand: cd order-service && npm start
+    region: singapore
     envVars:
+      - key: ORDER_SERVICE_1_URL
+        value: order-service-1.onrender.com:443
+      - key: ORDER_SERVICE_2_URL
+        value: order-service-2.onrender.com:443
+    healthCheckPath: /health
+
+  # Order Service Instance 1
+  - type: web
+    name: order-service-1
+    runtime: docker
+    dockerfilePath: ./order-service/Dockerfile
+    dockerContext: ./order-service
+    plan: free
+    region: singapore
+    envVars:
+      - key: PORT
+        value: 3001
       - key: MONGODB_URI
         sync: false
       - key: JWT_SECRET
-        generateValue: true
+        sync: false
       - key: INTERNAL_API_SECRET
         sync: false
       - key: RECOMMENDATION_SERVICE_URL
-        sync: false
+        value: https://recommendation-service-1.onrender.com
+      - key: INSTANCE_NAME
+        value: order-service-1
     healthCheckPath: /
 
+  # Order Service Instance 2
   - type: web
-    name: recommendation-service
-    env: node
-    region: singapore
+    name: order-service-2
+    runtime: docker
+    dockerfilePath: ./order-service/Dockerfile
+    dockerContext: ./order-service
     plan: free
-    buildCommand: cd recommendation-service && npm install
-    startCommand: cd recommendation-service && npm start
+    region: singapore
     envVars:
+      - key: PORT
+        value: 3001
+      - key: MONGODB_URI
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+      - key: INTERNAL_API_SECRET
+        sync: false
+      - key: RECOMMENDATION_SERVICE_URL
+        value: https://recommendation-service-2.onrender.com
+      - key: INSTANCE_NAME
+        value: order-service-2
+    healthCheckPath: /
+
+  # Recommendation Service Instance 1
+  - type: web
+    name: recommendation-service-1
+    runtime: docker
+    dockerfilePath: ./recommendation-service/Dockerfile
+    dockerContext: ./recommendation-service
+    plan: free
+    region: singapore
+    envVars:
+      - key: PORT
+        value: 3002
       - key: MONGODB_URI
         sync: false
       - key: INTERNAL_API_SECRET
         sync: false
+      - key: INSTANCE_NAME
+        value: recommendation-service-1
+    healthCheckPath: /
+
+  # Recommendation Service Instance 2
+  - type: web
+    name: recommendation-service-2
+    runtime: docker
+    dockerfilePath: ./recommendation-service/Dockerfile
+    dockerContext: ./recommendation-service
+    plan: free
+    region: singapore
+    envVars:
+      - key: PORT
+        value: 3002
+      - key: MONGODB_URI
+        sync: false
+      - key: INTERNAL_API_SECRET
+        sync: false
+      - key: INSTANCE_NAME
+        value: recommendation-service-2
     healthCheckPath: /
