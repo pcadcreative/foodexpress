@@ -1,0 +1,24 @@
+node_modules/
+.env
+*.log
+.DS_Store
+
+# Load Balancer Demo Files (Local Only)
+docker-compose.loadbalancer.yml
+nginx-loadbalancer.conf
+start-loadbalancer.ps1
+test-loadbalancer.ps1
+LOADBALANCER_DEMO.md
+
+# Ngrok Demo Files (Local + Public Access)
+ngrok.yml
+start-ngrok-demo.ps1
+NGROK_DEPLOYMENT.md
+
+# Fly.io deployment (requires credit card)
+# order-service/fly.toml
+# recommendation-service/fly.toml
+# FLY_DEPLOYMENT.md
+
+# Oracle Cloud deployment (requires credit card)
+# ORACLE_CLOUD_DEPLOYMENT.md

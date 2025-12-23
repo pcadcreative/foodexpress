@@ -1,0 +1,111 @@
+Important  implementation :
+-load balancing (2 servers -if one fails the other will)
+-2 backend servers each doing seperate task or seperate micro service each on different languages 
+-one service should talk to frontend (communicate)
+
+
+Low-Level Design (LLD) & High-Level Design (HLD)
+Food Booking & Ordering System (Reference-Based Format)
+LLD (Low-Level Design)
+
+Flow / Modules
+
+Login / Signup
+Selecting City
+Searching Restaurants
+Selecting Restaurant
+Selecting Food Items
+Selecting Quantity & Cart
+Selecting Delivery Address
+
+Making Payment
+Order Confirmation
+
+Class Schema Diagram 
+class User
+class User {
+ int user_id;
+String user_name;
+ String email;
+ String phone;
+ int total_orders;  
+}
+class City
+class City {
+  int pincode;
+  String city_name;
+}
+class Restaurant
+class Restaurant {
+  int restaurant_id;
+  String restaurant_name;
+  String restaurant_description;
+  double restaurant_rating;
+  City city;
+}
+class FoodItem
+class FoodItem {
+ int food_id;
+ String food_name;
+ String food_category;
+ double price;
+ boolean availability;
+}
+class Cart
+class Cart {
+  int cart_id;
+  User user;
+  List<FoodItem> food_items;
+  double total_amount;
+}
+class Order
+class Order {
+  int order_id;
+  User user;
+  Restaurant restaurant;
+  List<FoodItem> items;
+  String order_status;
+}
+class Delivery
+class Delivery {
+  int delivery_id;
+  String delivery_address;
+  String delivery_status;
+}
+class Payment
+class Payment {
+  long long payment_id;
+  String payment_mode;
+  double amount;
+  String payment_status;
+}
+
+HLD (High-Level Design)
+Functional Requirements
+
+User should be able to select the city
+User should be able to search and select restaurants
+User should be able to select food items
+User should be able to add items to cart
+Prevent duplicate order submission
+User must be able to make payment
+User must get order & payment confirmation
+
+Non-Functional Requirements
+
+High Availability
+Low Latency
+Scalability
+Secure Payment Processing
+Fault Tolerance
+
+Technical Stack
+Frontend
+React.js (Web Application)
+
+Backend
+Node.js
+Express.js
+
+Database
+MongoDB Atlas

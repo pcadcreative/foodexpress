@@ -1,0 +1,33 @@
+version: 2
+services:
+  - type: web
+    name: order-service
+    env: node
+    region: singapore
+    plan: free
+    buildCommand: cd order-service && npm install
+    startCommand: cd order-service && npm start
+    envVars:
+      - key: MONGODB_URI
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: INTERNAL_API_SECRET
+        sync: false
+      - key: RECOMMENDATION_SERVICE_URL
+        sync: false
+    healthCheckPath: /
+
+  - type: web
+    name: recommendation-service
+    env: node
+    region: singapore
+    plan: free
+    buildCommand: cd recommendation-service && npm install
+    startCommand: cd recommendation-service && npm start
+    envVars:
+      - key: MONGODB_URI
+        sync: false
+      - key: INTERNAL_API_SECRET
+        sync: false
+    healthCheckPath: /
