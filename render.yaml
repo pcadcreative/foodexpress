@@ -82,21 +82,3 @@ services:
       - key: INSTANCE_NAME
         value: recommendation-service-2
     healthCheckPath: /
-
-  # Nginx Load Balancer - Routes traffic to 2 order services
-  - type: web
-    name: nginx-load-balancer
-    runtime: image
-    image:
-      url: nginx:alpine
-    plan: free
-    region: singapore
-    disk:
-      name: nginx-config
-      mountPath: /etc/nginx
-      sizeGB: 1
-    envVars:
-      - key: ORDER_SERVICE_1_URL
-        value: https://order-service-1.onrender.com
-      - key: ORDER_SERVICE_2_URL
-        value: https://order-service-2.onrender.com
